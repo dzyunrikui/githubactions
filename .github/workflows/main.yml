@@ -1,7 +1,7 @@
 
 name: CI-CD-Pipeline-to-AWS--Elastic:beanstalk
 env:
-  EB_PACKAGE_S3_BUCKET_NAME: "dzyunrikui-flask"
+  EB_PACKAGE_S3_BUCKET_NAME : "dzyunrikui-flask"
   EB_APPLICATION_NAME: "NyFlask"
   EB_ENVIRONMENT_NAME: "MyFlask_ENV"
   DEPLOY_PACKAGE_NAME: "flask_app_${{ github.sha}}.zip"
@@ -28,7 +28,7 @@ jobs:
           aws-secret-access-key: ${{secrets.MY_AWS_SECRET_KEY }}
           aws-region: ${{env.AWS_REGION_NAME }}
       - name: copy deployment to s3 bucker
-        run: aws s3 cp  ${{env.DEPLOY_PACKAGE_NAME}} s3://${{env.EB_PACKAGE_S3_BUCKET_NAME}}/
+        run: aws s3 cp  ${{env.DEPLOY_PACKAGE_NAME}} s3://${{env.EB_PACKAGE_S3_BUCKET_NAME }}/
       - name: Print Happy Message for CI finish
         run: echo "CI Pipeline part finished"
   my_cd_part:
@@ -46,7 +46,7 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
           --application-name  ${{env.EB_APPLICATION_NAME}} \
-          --source-bundle S3Bucket="${{env.EB_PACKAGE_S3_BUCKET_NAME}}", S3Key="${{env.DEPLOY_PACKAGE_NAME}}"  \
+          --source-bundle S3Bucket="${{env.EB_PACKAGE_S3_BUCKET_NAME }}", S3Key="${{env.DEPLOY_PACKAGE_NAME}}"  \
           --version-label "Ver-${{github.sha}} "\
           --description "CommitSHA-${{github.sha}}"
       - name: Deploy new ElasticBeanstalk App version
