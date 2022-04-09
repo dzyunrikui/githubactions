@@ -21,4 +21,13 @@ jobs:
 
       - name: Create ZIP Deployment Package
         run: zip -r ${{env.DEPLOY_PACKAGE_NAME}} ./ -x *.git*
-        
+      - name: Configure AWS Creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: #{{secrets.MY_AWS_ACCESS_KEY }}
+          aws-secret-access-key: #{{secrets.MY_AWS_SECRET_KEY }}
+          aws-region: #{{env.AWS_REGION_NAME}}
+      - name: copy deployment to s3 bucker
+        run: aws s3 cp  ${{env.DEPLOY_PACKAGE_NAME}} s3://EB_PACKAGE_S3_BUCKET_NAME/
+      - name: Print Happy Message for CI finish
+        run: echo "CI Pipeline part finished"
