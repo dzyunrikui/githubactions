@@ -1,0 +1,24 @@
+
+name: CI-CD-Pipeline-to-AWS--Elastic:beanstalk
+env:
+  EB_PACKAGE_S3_BUCKET_NAME: "dzyunrikui-flask"
+  EB_APPLICATION_NAME: "NyFlask"
+  EB_ENVIRONMENT_NAME: "MyFlask_ENV"
+  DEPLOY_PACKAGE_NAME: "flask_app_${{ github.sha}}.zip"
+  AWS_REGION_NAME: "eu-north-1"
+on:
+  push:
+    branches: 
+      - master
+ 
+jobs:
+  my_ci_part:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Git Clone our repo
+        uses: actions/checkout@v1
+
+      - name: Create ZIP Deployment Package
+        run: zip -r ${{env.DEPLOY_PACKAGE_NAME}} ./ -x *.git*
+        
